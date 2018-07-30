@@ -1,4 +1,3 @@
-
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 RULES = { 'rock' => ['scissors', 'lizard'], 'paper' => ['spock', 'rock'],
           'scissors' => ['lizard', 'paper'], 'spock' => ['rock', 'scissors'],
@@ -94,7 +93,7 @@ loop do
     display_score(score)
 
     if score['Player'] == 5 || score['Computer'] == 5
-      puts "Game is over!"
+      puts("Game is over!")
       display_score(score)
       reset_score(score)
       break
