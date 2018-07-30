@@ -45,7 +45,7 @@ def update_score(score, winner)
 end
 
 def display_score(score)
-  puts"Player score: #{score['Player']}; Computer score: #{score['Computer']}"
+  puts("Player score: #{score['Player']}; Computer score: #{score['Computer']}")
 end
 
 def reset_score(score)
@@ -87,7 +87,7 @@ loop do
       display_winner(winner)
       update_score(score, winner)
     else
-      puts "It's a tie!"
+      puts("It's a tie!")
     end
 
     display_score(score)
