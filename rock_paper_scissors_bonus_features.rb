@@ -1,14 +1,15 @@
-VALID_CHOICES = %w(rock paper scissors spock lizard)
-RULES = { 'rock' => ['scissors', 'lizard'], 'paper' => ['spock', 'rock'],
-          'scissors' => ['lizard', 'paper'], 'spock' => ['rock', 'scissors'],
-          'lizard' => ['spock', 'paper'] }
+WINNING_CHOICES = { 'rock' => ['scissors', 'lizard'],
+                    'paper' => ['spock', 'rock'],
+                    'scissors' => ['lizard', 'paper'],
+                    'spock' => ['rock', 'scissors'],
+                    'lizard' => ['spock', 'paper'] }
 
 def prompt(message)
   puts("=> #{message}")
 end
 
-def win?(first, second)
-  RULES[first].include?(second)
+def win?(first_choice, second_choice)
+  WINNING_CHOICES[first_choice].include?(second_choice)
 end
 
 def make_choice(str)
@@ -40,6 +41,10 @@ def determine_winner(player, computer)
   end
 end
 
+def overall_winner?(score)
+  score['Player'] == 5 || score['Computer'] == 5
+end
+
 def update_score(score, winner)
   score[winner] += 1
 end
@@ -56,28 +61,30 @@ end
 score = { 'Player' => 0, 'Computer' => 0 }
 
 loop do
+  system('clear') || system('cls')
   puts("\n")
   prompt("Welcome to 'ROCK PAPER SCISSORS SPOCK LIZARD' !")
   puts("\n")
-  prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+  prompt("In order to be the grand winner, you need to win 5 rounds.")
+  prompt("After 5 rounds you can either start a new game or quit.\n\n")
+  prompt("Choose one: #{WINNING_CHOICES.keys.join(', ')}\n\n")
   prompt("Enter 'r' for rock, 'p' for paper, 'sc' for scissors")
   puts("\t'sp' for spock, 'l' for lizzard.")
 
   loop do
     choice = ''
-
     loop do
       puts("Your turn...")
       choice = make_choice(Kernel.gets().chop())
 
-      if VALID_CHOICES.include?(choice)
+      if WINNING_CHOICES.keys.include?(choice)
         break
       else
         prompt("That's not a valid choice.")
       end
     end
 
-    computer_choice = VALID_CHOICES.sample
+    computer_choice = WINNING_CHOICES.keys.sample
 
     puts("Player chose #{choice}; Computer chose #{computer_choice}")
 
@@ -92,7 +99,7 @@ loop do
 
     display_score(score)
 
-    if score['Player'] == 5 || score['Computer'] == 5
+    if overall_winner?(score)
       puts("Game is over!")
       display_score(score)
       reset_score(score)
@@ -100,6 +107,7 @@ loop do
     end
   end
   prompt("Do you want to play another game?")
+  prompt("Enter 'y' for 'yes', any other key for no.")
   answer = gets.chomp
 
   break unless answer.downcase.start_with?('y')
